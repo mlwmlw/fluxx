@@ -19,10 +19,11 @@ var Fluxx = function() {
 		return _store[name];
 	}
 	
-	F.prototype.createStore = function(name) {
-		return _store[name] = assign({}, EventEmitter.prototype, _storeFactories[name]());
-	}
+	
 	var instance = _instances[id] = new F();
+	F.prototype.createStore = function(name) {
+		return _store[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
+	}
 	F.prototype.getAction = function(name) {
 		name = name || 'global';
 		var actions = {}
