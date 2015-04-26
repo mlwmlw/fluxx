@@ -73,7 +73,7 @@ Fluxx.action = function(name, actions) {
 
 Fluxx.mixin = function(React) {
 	var getContext = function(com) {
-    return com.props.flux || (com.context && com.context.flux);
+		return com.props.flux || (com.context && com.context.flux);
 	}
 	return {
 		contextTypes: {
@@ -81,8 +81,6 @@ Fluxx.mixin = function(React) {
 		},
 		childContextTypes: {
 			flux: React.PropTypes.object
-		},
-		componentWillMount: function() {
 		},
 		getChildContext: function() {
 			return {
