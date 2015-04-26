@@ -3,10 +3,10 @@ var Fluxx = require('../../../src/fluxx');
 var List = React.createClass({
 	mixins: [Fluxx.mixin(React)],
 	getInitialState: function() {
-		this.list = this.flux().getStore('list')
+		this.list = this.flux().getStore('list');
 		return {items: this.list.getItems()};
 	},
-	componentDidMount: function() {
+	componentWillMount: function() {
 		this.list.addListener('change', this._onChange);
 	},
 	componentDidUnmount: function() {

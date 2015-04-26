@@ -19,7 +19,6 @@ var Fluxx = function() {
 		return _store[name];
 	}
 	
-	
 	var instance = _instances[id] = new F();
 	F.prototype.createStore = function(name) {
 		return _store[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
@@ -77,7 +76,7 @@ Fluxx.mixin = function(React) {
 			};
 		},
 		flux: function() {
-			return getContext(this).flux;
+			return getContext(this);
 		}
 	}
 }

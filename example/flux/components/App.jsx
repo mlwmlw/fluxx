@@ -2,10 +2,15 @@ var React = require('react');
 var Fluxx = require('../../../src/fluxx');
 var Button = require('./Button');
 var List = require('./List');
-module.exports = App = React.createClass({
+require('../stores/list');
+require('../actions/actions');
+module.exports = React.createClass({
 	mixins: [Fluxx.mixin(React)],
 	getInitialState: function() {
 		return {};
+	},
+	componentWillMount: function() {
+		this.flux().getAction().all();
 	},
 	pop: function() {
 		this.flux().getAction().pop();
