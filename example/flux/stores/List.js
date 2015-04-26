@@ -33,6 +33,13 @@ Fluxx.store('list', function() {
 		onPush: function(value) {
 			items.push(value)
 			this.emit('change');
+		},
+		dehydrate: function() {
+			return [items, hasInitialized];
+		},
+		rehydrate: function(state) {
+			items = state[0];
+			hasInitialized = state[1];
 		}
 	};
 });

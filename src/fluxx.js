@@ -11,17 +11,17 @@ var genId = function() {
 	return id;
 }
 var Fluxx = function() {
-	var _store = [];
+	var _stores = [];
 	var F = function() {};
 	var id = genId();
 	F.prototype = new Dispatcher;
 	F.prototype.getStore = function(name) {
-		return _store[name];
+		return _stores[name];
 	}
 	
 	var instance = _instances[id] = new F();
 	F.prototype.createStore = function(name) {
-		return _store[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
+		return _stores[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
 	}
 	F.prototype.getAction = function(name) {
 		name = name || 'global';
@@ -30,6 +30,20 @@ var Fluxx = function() {
 			actions[i] = _actions[name][i].bind(instance);
 		}
 		return actions;
+	}
+	F.prototype.dehydrate = function() {
+		var data = {};
+		for(var i in _stores) {
+			if(_stores[i].dehydrate) {
+				data[i] = _stores[i].dehydrate();
+			}
+		}
+		return data;
+	}
+	F.prototype.rehydrate = function(data) {
+		for(var i in data) {
+			_stores[i].rehydrate(data[i]);
+		}
 	}
 	for(var i in _storeFactories) {
 		instance.createStore(i);

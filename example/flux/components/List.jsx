@@ -13,10 +13,10 @@ var List = React.createClass({
 		this.list.remvoeListener('change', this._onChange);
 	},
 	render: function() {
-		var lis = this.state.items.map(function(i) {
-			return <li>{{i}}</li>
+		var lis = this.state.items.map(function(value, k) {
+			return <li key={k}>{value}</li>
 		});
-		return <ul>{{lis}}</ul>
+		return <ul>{lis}</ul>
 	},
 	_onChange: function() {
 		this.setState(this.getInitialState());
