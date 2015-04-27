@@ -1,19 +1,9 @@
 var Fluxx = require('../../../src/fluxx');
 Fluxx.store('list', function() {
 	var flux = this;
+	var actions = flux.getActions();
 	var hasInitialized = false;
 	var items = [];
-	flux.register(function(payload) {
-		if (payload.actionType === 'pop') {
-			flux.getStore('list').onPop();
-		}
-		else if (payload.actionType === 'push') {
-			flux.getStore('list').onPush(payload.value);
-		}
-		else if (payload.actionType === 'initial') {
-			flux.getStore('list').onInitial(payload.value);
-		}
-	})
 	return {
 		hasInitialized: function() {
 			return hasInitialized;
@@ -40,6 +30,12 @@ Fluxx.store('list', function() {
 		rehydrate: function(state) {
 			items = state[0];
 			hasInitialized = state[1];
-		}
+		},
+		token: flux.listenTo('list', function(on) {
+			on(actions.pop, 'onPop');
+			on(actions.push, 'onPush');	
+			//on(actions.all, 'onInitial');	
+			on(actions.initial, 'onInitial');	
+		})
 	};
 });

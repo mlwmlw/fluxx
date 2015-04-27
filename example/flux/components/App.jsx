@@ -7,17 +7,18 @@ require('../actions/actions');
 module.exports = React.createClass({
 	mixins: [Fluxx.mixin(React)],
 	getInitialState: function() {
+		this.actions = this.flux().getActions();
 		return {};
 	},
 	componentWillMount: function() {
-		this.flux().getAction().all();
+		this.actions.all();
 	},
 	pop: function() {
-		this.flux().getAction().pop();
+		this.actions.pop();
 	},
 	push: function() {
 		var list = this.flux().getStore('list');
-		this.flux().getAction().push(list.getItems().length + 1);
+		this.actions.push(list.getItems().length + 1);
 	},
 	render: function() {
 		return <div>

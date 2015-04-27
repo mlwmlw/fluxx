@@ -18,18 +18,41 @@ var Fluxx = function() {
 	F.prototype.getStore = function(name) {
 		return _stores[name];
 	}
-	
+		
 	var instance = _instances[id] = new F();
 	F.prototype.createStore = function(name) {
 		return _stores[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
 	}
-	F.prototype.getAction = function(name) {
+	F.prototype.getActions = function(name) {
 		name = name || 'global';
 		var actions = {}
 		for(var i in _actions[name]) { 
 			actions[i] = _actions[name][i].bind(instance);
+			actions[i].valueOf = (function(name, i) {
+				return function() {
+					return name + '-' + i;
+				}
+			})(name, i);
+			actions[i].dispatch = (function(action) {
+				return function() {
+					instance.dispatch.call(instance, {
+						actionType: action,
+						value: arguments
+					});
+				}
+			})(actions[i]);
 		}
 		return actions;
+	}
+	F.prototype.listenTo = function(store, listener) {
+		var cbs = {};
+		listener(function(action, cb) {
+			cbs[action.valueOf()] = cb;
+		});
+		return instance.register(function(payload) {
+			var s = instance.getStore(store);
+			s[cbs[payload.actionType.valueOf()]].apply(s, payload.value);
+		});
 	}
 	F.prototype.dehydrate = function() {
 		var data = {};
@@ -67,6 +90,7 @@ Fluxx.action = function(name, actions) {
 	if(!_actions[name])
 		_actions[name] = {};
 	for(var i in actions) { 
+		
 		_actions[name][i] = actions[i];
 	}
 };

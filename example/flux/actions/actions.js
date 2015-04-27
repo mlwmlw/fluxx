@@ -8,27 +8,16 @@ var actions = Fluxx.action({
 		fetch('/api/list.json').then(function(res) {
 			return res.json();
 		}).then(function(data) {
-			flux.dispatch({
-				actionType: 'initial',
-				value: data
-			});	
+			flux.getActions().initial.dispatch(data);
 		});
 	},
 	pop: function() {
-		this.dispatch({
-			actionType: 'pop'
-		});
+		this.getActions().pop.dispatch();
 	},
 	push: function(data) {
-		this.dispatch({
-			actionType: 'push',
-			value: data
-		});
+		this.getActions().push.dispatch(data);
 	},
 	initial: function(data) {
-		this.dispatch({
-			actionType: 'initial', 
-			value: data
-		});
+		this.getAction.initial.dispatch(data);
 	}
 });
