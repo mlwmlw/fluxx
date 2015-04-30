@@ -22,10 +22,10 @@ app.use(function(req, res, next) {
   var flux = new Fluxx();
   var app = React.createElement(App, {flux: flux});
   React.renderToString(app);
-	setTimeout(function() {
+	flux.ready(function() {
 		var html = React.renderToString(app);
 		res.render('index', {html: html, dehydratedStr: JSON.stringify(flux.dehydrate())});
-	}, 500);
+	});
 });
 
 var server = app.listen(8080, function() {

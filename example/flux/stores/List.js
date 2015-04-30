@@ -34,7 +34,6 @@ Fluxx.store('list', function() {
 		token: flux.listenTo('list', function(on) {
 			on(actions.pop, 'onPop');
 			on(actions.push, 'onPush');	
-			//on(actions.all, 'onInitial');	
 			on(actions.initial, 'onInitial');	
 		})
 	};

@@ -1,7 +1,6 @@
 var Dispatcher = require('flux').Dispatcher;
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-
 var _storeFactories = {};
 var _instances = []
 var _id = 0;
@@ -12,6 +11,7 @@ var genId = function() {
 }
 var Fluxx = function() {
 	var _stores = [];
+	var _promises = [];
 	var F = function() {};
 	var id = genId();
 	F.prototype = new Dispatcher;
@@ -27,7 +27,11 @@ var Fluxx = function() {
 		name = name || 'global';
 		var actions = {}
 		for(var i in _actions[name]) { 
-			actions[i] = _actions[name][i].bind(instance);
+			actions[i] = (function(action) {
+				return function() {
+					 _promises.push(action.apply(instance, arguments));
+				};
+			})(_actions[name][i]);
 			actions[i].valueOf = (function(name, i) {
 				return function() {
 					return name + '-' + i;
@@ -43,6 +47,12 @@ var Fluxx = function() {
 			})(actions[i]);
 		}
 		return actions;
+	}
+	F.prototype.ready = function(cb) {
+		Promise.all(_promises).then(function(result) {
+			_promises = [];
+			cb();
+		});
 	}
 	F.prototype.listenTo = function(store, listener) {
 		var cbs = {};

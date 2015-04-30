@@ -5,10 +5,11 @@ var actions = Fluxx.action({
 		var flux = this;
 		if(flux.getStore('list').hasInitialized())
 			return;
-		fetch('/api/list.json').then(function(res) {
+		return fetch('/api/list.json').then(function(res) {
 			return res.json();
 		}).then(function(data) {
-			flux.getActions().initial.dispatch(data);
+			flux.getActions().initial(data);
+			return data;
 		});
 	},
 	pop: function() {
@@ -18,6 +19,6 @@ var actions = Fluxx.action({
 		this.getActions().push.dispatch(data);
 	},
 	initial: function(data) {
-		this.getAction.initial.dispatch(data);
+		this.getActions().initial.dispatch(data);
 	}
 });

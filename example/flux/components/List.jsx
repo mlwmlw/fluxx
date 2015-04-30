@@ -6,7 +6,7 @@ var List = React.createClass({
 		this.list = this.flux().getStore('list');
 		return {items: this.list.getItems()};
 	},
-	componentWillMount: function() {
+	componentDidMount: function() {
 		this.list.addListener('change', this._onChange);
 	},
 	componentDidUnmount: function() {
