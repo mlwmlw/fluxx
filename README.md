@@ -12,28 +12,34 @@ isomorphic flux
  - Checksum mismatch
  
 解法
-- resolver 希望由 fluxx 內部提供方法（未實作）
-- singleton - 每個 request 都有獨立的 new Fluxx() store action component 提供方法取得該 flux 的 instance。
+- resolver 由 fluxxx 提供 ready 來檢查
+- singleton - 每個 request 都有獨立的 new Fluxxx() store action component 提供方法取得該 flux 的 instance。
 - checksum - dehydrate / rehydrate
 
 ## usage 
 
 ### action
 ```js
-Fluxx.action({
+Fluxxx.action({
   all: function() {
-    var flux = this;
-    flux.dispatch({actionType: 'all'});
+    var flux = this.flux;
+    // return promise
+    return fetch('/api/list.json').then(function(res) {
+      return res.json();
+    }).then(function(data) {
+      flux.getActions().initial(data);
+      return data;
+    });
+  },
+  initial: function(data) {
+    this.flux.getActions().initial.dispatch(data);
   }
 });
 ```
 ### store
 ```js
-Fluxx.store('list', function() {
-  var flux = this;
-  flux.register(function(payload) {
-    //...
-  });
+Fluxxx.store('list', function() {
+  var flux = this.flux;
   var list = [1, 2, 3];
   return {
     getList: function() {
@@ -44,6 +50,11 @@ Fluxx.store('list', function() {
     },
     rehydrate: function(state) {
       list = state[0];
+    },
+    dispatchToken: flux.listenTo('list', function(on) {
+      on(actions.pop, 'onPop');
+      on(actions.push, 'onPush');      
+      on(actions.initial, 'onInitial');
     }
   }
 });
@@ -52,7 +63,7 @@ Fluxx.store('list', function() {
 
 ```js
 var List = React.createClass({
-	mixins: [Fluxx.mixin(React)],
+	mixins: [Fluxxx.mixin(React)],
 	getInitialState: function() {
 		this.list = this.flux().getStore('list');
 		return {items: this.list.getItems()};
