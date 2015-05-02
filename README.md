@@ -18,7 +18,7 @@ isomorphic flux
 
 ## usage 
 
-### action
+### Action
 ```js
 Fluxxx.action({
   all: function() {
@@ -36,7 +36,7 @@ Fluxxx.action({
   }
 });
 ```
-### store
+### Store
 ```js
 Fluxxx.store('list', function() {
   var flux = this.flux;
@@ -59,7 +59,7 @@ Fluxxx.store('list', function() {
   }
 });
 ```
-### component
+### Component
 
 ```js
 var List = React.createClass({
@@ -74,10 +74,22 @@ var List = React.createClass({
 });
 ```
 
-### create context
+### Create context
 
 ```js
 var flux = new Fluxxx();
 flux.rehydrate(window.__dehydrated);
 React.render(<App flux={flux} />, document.getElementById('container'));
+```
+
+### Create context in server side
+
+```js
+var flux = new Fluxxx();
+var app = React.createElement(App, {flux: flux});
+React.renderToString(app);
+flux.ready(function() {
+  var html = React.renderToString(app);
+  res.render('index', {html: html, dehydratedStr: JSON.stringify(flux.dehydrate())});
+});
 ```
