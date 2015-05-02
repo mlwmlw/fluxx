@@ -2,7 +2,7 @@ require('babel/register');
 var express = require('express'),
     app = express(),
     React = require('react'),
-    Fluxx = require('../src/fluxx'),
+    Fluxx = require('../src/fluxxx'),
     App = require('./flux/components/App.jsx');
 
 // view engine setup
