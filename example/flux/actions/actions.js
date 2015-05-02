@@ -1,4 +1,4 @@
-var Fluxx = require('../../../src/fluxx');
+var Fluxx = require('../../../src');
 var fetch = require('../utils/fetch');
 var actions = Fluxx.action({
 	all: function() {

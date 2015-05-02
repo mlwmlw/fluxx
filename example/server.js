@@ -2,7 +2,7 @@ require('babel/register');
 var express = require('express'),
     app = express(),
     React = require('react'),
-    Fluxx = require('../src/fluxxx'),
+    Fluxxx = require('../src'),
     App = require('./flux/components/App.jsx');
 
 // view engine setup
@@ -19,7 +19,7 @@ app.use(require('body-parser').json()); // Post requests in application/json
 app.use(function(req, res, next) {
 	if(req.path != '/')
 		return;
-  var flux = new Fluxx();
+  var flux = new Fluxxx();
   var app = React.createElement(App, {flux: flux});
   React.renderToString(app);
 	flux.ready(function() {

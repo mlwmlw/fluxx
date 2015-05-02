@@ -1,7 +1,7 @@
 var React = require('react');
-var Fluxx = require('../../../src/fluxx');
+var Fluxxx = require('../../../src');
 var List = React.createClass({
-	mixins: [Fluxx.mixin(React)],
+	mixins: [Fluxxx.mixin(React)],
 	getInitialState: function() {
 		this.list = this.flux().getStore('list');
 		return {items: this.list.getItems()};

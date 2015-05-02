@@ -1,4 +1,4 @@
-var Fluxx = require('../src/fluxx');
+var Fluxx = require('../src');
 var React = require('react');
 var App = require('./flux/components/App');
 

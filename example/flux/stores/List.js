@@ -1,4 +1,4 @@
-var Fluxx = require('../../../src/fluxx');
+var Fluxx = require('../../../src');
 Fluxx.store('list', function() {
 	var flux = this;
 	var actions = flux.getActions();

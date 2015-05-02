@@ -1,11 +1,11 @@
 var React = require('react');
-var Fluxx = require('../../../src/fluxx');
+var Fluxxx = require('../../../src');
 var Button = require('./Button');
 var List = require('./List');
 require('../stores/list');
 require('../actions/actions');
 module.exports = React.createClass({
-	mixins: [Fluxx.mixin(React)],
+	mixins: [Fluxxx.mixin(React)],
 	getInitialState: function() {
 		this.actions = this.flux().getActions();
 		return {};
