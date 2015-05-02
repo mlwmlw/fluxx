@@ -77,7 +77,7 @@ var List = React.createClass({
 ### create context
 
 ```js
-var flux = new Fluxx();
+var flux = new Fluxxx();
 flux.rehydrate(window.__dehydrated);
 React.render(<App flux={flux} />, document.getElementById('container'));
 ```
