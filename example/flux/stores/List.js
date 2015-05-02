@@ -1,6 +1,6 @@
 var Fluxx = require('../../../src');
 Fluxx.store('list', function() {
-	var flux = this;
+	var flux = this.flux;
 	var actions = flux.getActions();
 	var hasInitialized = false;
 	var items = [];

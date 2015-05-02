@@ -2,7 +2,7 @@ var Fluxx = require('../../../src');
 var fetch = require('../utils/fetch');
 var actions = Fluxx.action({
 	all: function() {
-		var flux = this;
+		var flux = this.flux;
 		if(flux.getStore('list').hasInitialized())
 			return;
 		return fetch('/api/list.json').then(function(res) {
@@ -13,12 +13,12 @@ var actions = Fluxx.action({
 		});
 	},
 	pop: function() {
-		this.getActions().pop.dispatch();
+		this.flux.getActions().pop.dispatch();
 	},
 	push: function(data) {
-		this.getActions().push.dispatch(data);
+		this.flux.getActions().push.dispatch(data);
 	},
 	initial: function(data) {
-		this.getActions().initial.dispatch(data);
+		this.flux.getActions().initial.dispatch(data);
 	}
 });

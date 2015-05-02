@@ -21,7 +21,7 @@ var Fluxx = function() {
 		
 	var instance = _instances[id] = new F();
 	F.prototype.createStore = function(name) {
-		return _stores[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply(instance));
+		return _stores[name] = assign({}, EventEmitter.prototype, _storeFactories[name].apply({flux: instance}));
 	}
 	F.prototype.getActions = function(name) {
 		name = name || 'global';
@@ -29,7 +29,7 @@ var Fluxx = function() {
 		for(var i in _actions[name]) { 
 			actions[i] = (function(action) {
 				return function() {
-					 _promises.push(action.apply(instance, arguments));
+					 _promises.push(action.apply({flux: instance}, arguments));
 				};
 			})(_actions[name][i]);
 			actions[i].valueOf = (function(name, i) {
